@@ -1,0 +1,12 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+mlruns/
+logs/
+mlflow.db
+
+google-cloud-sdk/
+
+*.egg-info/
