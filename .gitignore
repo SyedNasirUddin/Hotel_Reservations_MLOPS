@@ -10,3 +10,4 @@ mlflow.db
 google-cloud-sdk/
 
 *.egg-info/
+*.pkl
