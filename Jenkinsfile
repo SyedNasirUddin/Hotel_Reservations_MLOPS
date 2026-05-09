@@ -1,35 +1,32 @@
-pipeline {
+pipeline{
     agent any
 
-    stages {
-
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main',
-                credentialsId: 'github-token',
-                url: 'https://github.com/SyedNasirUddin/Hotel_Reservations_MLOPS.git'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t hotel-mlops .'
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-
-                sh 'docker stop hotel-container || true'
-                sh 'docker rm hotel-container || true'
-
-                sh '''
-                docker run -d \
-                --name hotel-container \
-                -p 5000:5000 \
-                hotel-mlops
-                '''
-            }
-        }
+    environment {
+        VENV_DIR = 'venv'
+        GCP_PROJECT = "mlops-new-447207"
+        GCLOUD_PATH = "/var/jenkins_home/google-cloud-sdk/bin"
     }
-}
+
+    stages{
+        stage('Cloning Github repo to Jenkins'){
+            steps{
+                script{
+                    echo 'Cloning Github repo to Jenkins............'
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/SyedNasirUddin/Hotel_Reservations_MLOPS.git']])
+                }
+            }
+        }
+
+        stage('Setting up our Virtual Environment and Installing dependancies'){
+            steps{
+                script{
+                    echo 'Setting up our Virtual Environment and Installing dependancies............'
+                    sh '''
+                    python -m venv ${VENV_DIR}
+                    . ${VENV_DIR}/bin/activate
+                    pip install --upgrade pip
+                    pip install -e .
+                    '''
+                }
+            }
+        }
