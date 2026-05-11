@@ -65,6 +65,10 @@ pipeline {
                     sh '''
                     . ${VENV_DIR}/bin/activate
 
+
+                    export PYTHONPATH=$WORKSPACE
+
+
                     python pipeline/training_pipeline.py
                     '''
                 }
