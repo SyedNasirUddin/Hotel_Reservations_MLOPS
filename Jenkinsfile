@@ -48,6 +48,12 @@ pipeline {
 
                     python3 -m pip install --upgrade pip setuptools wheel
 
+                    python3 -m pip install --upgrade pip setuptools wheel
+
+                    python3 -m pip uninstall -y numpy pandas || true
+
+                    python3 -m pip install numpy pandas
+
                     python3 -m pip install --default-timeout=100 --no-cache-dir -r requirements.txt
                     '''
                 }
