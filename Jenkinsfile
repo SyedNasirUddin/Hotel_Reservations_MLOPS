@@ -54,6 +54,23 @@ pipeline {
             }
         }
 
+        stage('Training ML Model') {
+
+            steps {
+
+                script {
+
+                    echo 'Training ML Model............'
+
+                    sh '''
+                    . ${VENV_DIR}/bin/activate
+
+                    python pipeline/training_pipeline.py
+                    '''
+                }
+            }
+        }
+
         stage('Building and Pushing Docker Image to GCR') {
 
             steps {

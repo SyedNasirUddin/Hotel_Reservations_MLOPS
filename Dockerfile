@@ -11,13 +11,13 @@ RUN apt-get update && apt-get install -y \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+COPY requirements.txt .
 
 RUN pip install --upgrade pip
 
-RUN pip install --no-cache-dir -e .
+RUN pip install --default-timeout=100 --no-cache-dir -r requirements.txt
 
-RUN python pipeline/training_pipeline.py
+COPY . .
 
 EXPOSE 5000
 
