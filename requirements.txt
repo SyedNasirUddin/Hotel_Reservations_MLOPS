@@ -1,9 +1,9 @@
-pandas==2.2.3
-numpy==1.26.4
+pandas==3.0.3
+numpy==2.4.4
 google-cloud-storage
-scikit-learn==1.5.2
+scikit-learn
 pyyaml
 imbalanced-learn
 lightgbm
-mlflow==2.17.2
+mlflow==3.12.0
 flask
