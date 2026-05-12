@@ -1,3 +1,4 @@
+
 pipeline {
 
     agent any
@@ -46,10 +47,7 @@ pipeline {
 
                     . ${VENV_DIR}/bin/activate
 
-
                     python3 -m pip install --upgrade pip setuptools wheel
-
-
 
                     python3 -m pip install --default-timeout=100 --no-cache-dir -r requirements.txt
                     '''
@@ -57,9 +55,7 @@ pipeline {
             }
         }
 
-
-
-        stage('Building and Pushing Docker Image to GCR') {
+        stage('Building and Pushing Docker Image to Artifact Registry') {
 
             steps {
 
@@ -67,7 +63,7 @@ pipeline {
 
                     script {
 
-                        echo 'Building and Pushing Docker Image to GCR............'
+                        echo 'Building and Pushing Docker Image to Artifact Registry............'
 
                         sh '''
                         export PATH=$PATH:${GCLOUD_PATH}
@@ -76,11 +72,11 @@ pipeline {
 
                         gcloud config set project ${GCP_PROJECT}
 
-                        gcloud auth configure-docker --quiet
+                        gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
-                        docker build -t gcr.io/${GCP_PROJECT}/hotel-reservation-app:latest .
+                        docker build -t us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest .
 
-                        docker push gcr.io/${GCP_PROJECT}/hotel-reservation-app:latest
+                        docker push us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest
                         '''
                     }
                 }
