@@ -72,8 +72,8 @@ pipeline {
 
                         gcloud config set project ${GCP_PROJECT}
 
-                        gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
-
+`                       cat ${GOOGLE_APPLICATION_CREDENTIALS} | docker login -u _json_key --password-stdin https://us-central1-docker.pkg.dev
+                        
                         docker build -t us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest .
 
                         docker push us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest
