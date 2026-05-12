@@ -103,8 +103,8 @@ pipeline {
                         --image=us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest \
                         --platform=managed \
                         --region=us-central1 \
-                        --allow-unauthenticated \
-                        --port=5000 \
+                        --allow=unauthenticated \
+                        --port=8080 \
                         --quiet
                         '''
                     }
