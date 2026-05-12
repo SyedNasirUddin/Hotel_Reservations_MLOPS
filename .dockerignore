@@ -1,0 +1,13 @@
+venv
+__pycache__
+.git
+mlruns
+logs
+notebook
+.dist
+*.pyc
+*.pyo
+*.pyd
+google-cloud-sdk
+custom_jenkins
+artifacts/raw

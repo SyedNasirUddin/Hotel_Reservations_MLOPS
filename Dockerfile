@@ -11,12 +11,12 @@ RUN apt-get update && apt-get install -y \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY requirements-deploy.txt .
+
 
 RUN pip install --upgrade pip
 
-RUN pip install --default-timeout=100 --no-cache-dir -r requirements.txt
-
+RUN pip install --default-timeout=100 --no-cache-dir -r requirements-deploy.txt
 COPY . .
 
 EXPOSE 5000
