@@ -1,4 +1,3 @@
-
 pipeline {
 
     agent any
@@ -72,12 +71,41 @@ pipeline {
 
                         gcloud config set project ${GCP_PROJECT}
 
-                        cat ${GOOGLE_APPLICATION_CREDENTIALS} | docker login -u _json_key --password-stdin https://us-central1-docker.pkg.dev 
-                        
+                        cat ${GOOGLE_APPLICATION_CREDENTIALS} | docker login -u _json_key --password-stdin https://us-central1-docker.pkg.dev
 
                         docker build -t us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest .
 
                         docker push us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Google Cloud Run') {
+
+            steps {
+
+                withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+
+                    script {
+
+                        echo 'Deploying application to Google Cloud Run............'
+
+                        sh '''
+                        export PATH=$PATH:${GCLOUD_PATH}
+
+                        gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+
+                        gcloud config set project ${GCP_PROJECT}
+
+                        gcloud run deploy hotel-reservation-service \
+                        --image=us-central1-docker.pkg.dev/${GCP_PROJECT}/hotel-repo/hotel-reservation-app:latest \
+                        --platform=managed \
+                        --region=us-central1 \
+                        --allow-unauthenticated \
+                        --port=5000 \
+                        --quiet
                         '''
                     }
                 }
@@ -98,3 +126,4 @@ pipeline {
         }
     }
 }
+
